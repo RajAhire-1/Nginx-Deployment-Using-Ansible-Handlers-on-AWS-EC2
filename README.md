@@ -6,9 +6,7 @@ This project demonstrates **automated deployment and configuration of Nginx** on
 
 The automation installs Nginx, configures a **custom listening port (777)**, deploys a custom HTML page, and ensures the Nginx service is **reloaded automatically only when configuration changes occur**, following Ansible best practices.
 
-This project highlights **idempotency**, **configuration management**, and **event-driven service restarts using handlers**, which are critical skills in real-world DevOps environments.
-
----
+![](img/overview.png)
 
 ## Architecture
 
