@@ -1,0 +1,49 @@
+---
+- name: deployment of nginx without handlers
+  hosts: TARGET_SERVER
+  become: yes
+
+  vars:
+    pkg: nginx
+    svc: nginx
+    file_path: /usr/share/nginx/html/index.html
+    conf_file: /etc/nginx/conf.d/custom.conf
+
+  tasks:
+    - name: install nginx
+      ansible.builtin.dnf:
+        name: "{{ pkg }}"
+        state: present
+
+    - name: start and enable nginx
+      ansible.builtin.systemd_service:
+        name: "{{ svc }}"
+        state: started
+        enabled: true
+
+    - name: add custom configuration file
+      ansible.builtin.blockinfile:
+        path: "{{ conf_file }}"
+        create: yes
+        block: |
+          server {
+              listen 80;
+
+              location / {
+                  root /usr/share/nginx/html;
+                  index index.html index.htm;
+              }
+          }
+
+    - name: deploy html file
+      ansible.builtin.copy:
+        dest: "{{ file_path }}"
+        content: |
+          <html>
+            <head>
+              <title>Welcome to Nginx Server</title>
+            </head>
+            <body>
+              <h1>Success! Nginx is installed and running without handlers.</h1>
+            </body>
+          </html>
